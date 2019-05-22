@@ -43,10 +43,14 @@ export default class Barrage {
 
   init({
     top = 0,
-    timeOut = 0
+    timeOut = 0,
+    isNew = false
   }) {
     this.timeOut = timeOut;
     this.barrage.style.top = `${top}px`;
+    if(isNew) {
+      this.barrage.style.backgroundColor = `red`;
+    }
     this.container.insertBefore(this.barrage, this.container.children[0]);
   }
 

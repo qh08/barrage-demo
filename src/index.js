@@ -7,7 +7,7 @@ const container = document.getElementById("barrages");
 const controller = new BarrageController();
 
 controller.initBarrages(data);
-controller.start()
+controller.start();
 
 document.getElementById("button").addEventListener("click", function() {
   const content = document.getElementById("input").value;
@@ -16,6 +16,9 @@ document.getElementById("button").addEventListener("click", function() {
     container,
     content
   });
-  barrage.init({});
+  barrage.init({
+    isNew: true,
+    top: 100
+  });
   barrage.start();
 });
