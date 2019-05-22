@@ -1,0 +1,30 @@
+html,
+body {
+  margin: 0px;
+}
+.main {
+  padding: 50px;
+  position: relative;
+  z-index: 20;
+}
+.player {
+  width: 640px;
+  height: 700px;
+  border: 10px solid #000000;
+  margin: 0;
+  position: relative;
+  z-index: 10;
+  background-color: #e6e6e6;
+}
+.barrages {
+  overflow: hidden;
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  width: 100%;
+  height: 100%;
+  background: transparent;
+}
+
+
+/*# sourceMappingURL=/src.a2b27638.css.map */
