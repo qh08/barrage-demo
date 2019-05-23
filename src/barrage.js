@@ -9,7 +9,7 @@ export default class Barrage {
     this.heightOffset = null;
     this.timeOut = null;
     this.barrageStyle = {
-      "line-height": "2",
+      "line-height": "1",
       "user-select": "none",
       position: "absolute",
       left: `${container.offsetWidth}px`,
@@ -58,7 +58,7 @@ export default class Barrage {
     setTimeout(() => {
       this.barrage.style.transform = `translateX(-${this.container.offsetWidth +
         this.barrage.offsetWidth +
-        10}px)`;
+        10}px) translateY(0px) translateZ(0px)`;
     }, this.timeOut);
   }
 

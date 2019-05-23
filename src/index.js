@@ -4,9 +4,15 @@ import BarrageController from "./barrageController";
 import data from "./data";
 
 const container = document.getElementById("barrages");
-const controller = new BarrageController();
+const controller = new BarrageController({
+  container: document.getElementById("barrages"),
+  // mode: "",
+  barrageInfo: data,
+  barrageHeight: 25,
+  // isLoop: true,
+  // hasTimeLine: false
+});
 
-controller.initBarrages(data);
 controller.start();
 
 document.getElementById("button").addEventListener("click", function() {
