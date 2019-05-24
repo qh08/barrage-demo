@@ -1,18 +1,19 @@
 export default class Barrage {
-  constructor({ container, content }) {
+  constructor({ container }) {
     this.container = container;
-    this.content = content || "default text";
+    this.content = "";
     this.color = null;
     this.backgroundColor = null;
     this.viewPortLength = null;
-    this.time = 5000;
     this.heightOffset = null;
-    this.timeOut = null;
+    this.startTime = null;
+    this.working = false;
+    this.delay = 0;
     this.barrageStyle = {
       "line-height": "1",
       "user-select": "none",
       position: "absolute",
-      left: `${container.offsetWidth}px`,
+      left: `${container.clientWidth}px`,
       top: "20px",
       transform: "0",
       transition: `transform 5s linear`,
@@ -36,30 +37,72 @@ export default class Barrage {
 
   genBarrage() {
     const div = document.createElement("div");
-    div.textContent = this.content;
-    div.setAttribute("style", this.getStyleString());
+    this.setStyle(div);
     return div;
   }
 
-  init({
-    top = 0,
-    timeOut = 0,
-    isNew = false
-  }) {
-    this.timeOut = timeOut;
-    this.barrage.style.top = `${top}px`;
-    if(isNew) {
-      this.barrage.style.backgroundColor = `red`;
-    }
+  setStyle(dom) {
+    dom.setAttribute("style", this.getStyleString());
+  }
+
+  load() {
     this.container.insertBefore(this.barrage, this.container.children[0]);
   }
 
-  start() {
+  restart({
+    content = "default text",
+    top = 0,
+    isNew = false,
+    workingTime = 5000
+  }) {
+    this.barrage.setAttribute("style", "");
+    this.working = true;
+    this.barrage.textContent = '';
+    
+    setTimeout(() => {
+      this.barrage.setAttribute("style", this.getStyleString());
+      this.barrage.textContent = content;
+      this.barrage.style.top = `${top}px`;
+      if (isNew) {
+        this.barrage.style.backgroundColor = `red`;
+      }
+
+      setTimeout(() => {
+        this.barrage.style.transition = "transform 5s linear";
+        this.barrage.style.transform = `translateX(-${this.container
+          .offsetWidth +
+          this.barrage.offsetWidth +
+          10}px) translateY(0px) translateZ(0px)`;
+      }, 0);
+
+      setTimeout(() => {
+        this.working = false;
+      }, workingTime);
+    }, 1000);
+  }
+
+  start({
+    content = "default text",
+    top = 0,
+    isNew = false,
+    workingTime = 5000
+  }) {
+    this.barrage.textContent = content;
+    this.barrage.style.top = `${top}px`;
+    if (isNew) {
+      this.barrage.style.backgroundColor = `red`;
+    }
+    this.working = true;
+
     setTimeout(() => {
       this.barrage.style.transform = `translateX(-${this.container.offsetWidth +
         this.barrage.offsetWidth +
         10}px) translateY(0px) translateZ(0px)`;
-    }, this.timeOut);
+    }, 0);
+
+    setTimeout(() => {
+      this.working = false;
+    }, workingTime);
   }
 
   destroy() {}

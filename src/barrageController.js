@@ -17,35 +17,73 @@ export default class barrageController {
     this.barrageInfo = barrageInfo;
     // 弹幕高度
     this.barrageHeight = barrageHeight;
-    // // 是否循环播放弹幕
-    // this.isLoop = isLoop;
-    // // 是否有时间轴
-    // this.hasTimeLine = hasTimeLine;
-
+    // 是否循环播放弹幕
+    this.isLoop = isLoop;
+    // 是否有时间轴
+    this.hasTimeLine = hasTimeLine;
+    // 弹幕飘过的时间
+    this.periodTime = 5000;
+    // 弹幕最大长度，0为无限制长度, 单位px
+    this.barrageMaxWidth = 200;
+    // 同一行前后弹幕的最小时间间隔
+    this.barrageInterval = null;
     // 纵向显示弹幕的最大值
-    this.verticalBarrageNum = Math.floor(
-      this.container.clientHeight / this.barrageHeight / (this.mode === "full"
-        ? 1
-        : this.mode === 'half' ? 2 : 4)
-    );
+    this.verticalBarrageNum = 4;
+    this.verticalIndex = 0;
+    this.delayCount = 0;
+
+    this.lineBarrage = new Array(this.verticalBarrageNum);
+    this.storage = [];
+
+    this.initBarrageInterval();
+    this.initTimeLine();
+  }
+
+  initBarrageInterval() {
+    this.barrageInterval =
+      (this.periodTime * this.barrageMaxWidth) /
+      (this.container.clientWidth + this.barrageMaxWidth);
+  }
+
+  initTimeLine() {
+    this.barrageInfo.forEach((info, index) => {
+      const count = Math.floor(index / this.verticalBarrageNum);
+      info.delay = (
+        count * this.barrageInterval +
+        (Math.random() * this.barrageInterval) / 2
+      ).toFixed(2);
+    });
   }
 
   start() {
-    this.barrageInfo.forEach((d, index) => {
-      this.initBarrage(d.content, index);
+    this.barrageInfo.forEach((info, index) => {
+      setTimeout(() => {
+        let barrage = this.storage.find(barrage => !barrage.working);
+        if (!barrage) {
+          barrage = new Barrage({
+            container: this.container
+          });
+          this.storage.push(barrage);
+          barrage.load();
+          this.startBarrage(barrage, info.content);
+        } else {
+          barrage.restart({
+            content: info.content,
+            top: this.verticalIndex * this.barrageHeight,
+            time: this.periodTime
+          });
+        }
+        this.verticalIndex++;
+        this.verticalIndex %= this.verticalBarrageNum;
+      }, info.delay);
     });
   }
 
-  initBarrage(content, index) {
-    const barrage = new Barrage({
-      container: this.container,
-      content
+  startBarrage(barrage, content) {
+    barrage.start({
+      content,
+      top: this.verticalIndex * this.barrageHeight,
+      time: this.periodTime
     });
-
-    barrage.init({
-      top: this.barrageHeight * (index % this.verticalBarrageNum),
-      timeOut: 2000 * Math.floor(index / this.verticalBarrageNum)
-    });
-    barrage.start();
   }
 }

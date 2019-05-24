@@ -6,9 +6,9 @@ import data from "./data";
 const container = document.getElementById("barrages");
 const controller = new BarrageController({
   container: document.getElementById("barrages"),
-  // mode: "",
   barrageInfo: data,
   barrageHeight: 25,
+  interval: 1000
   // isLoop: true,
   // hasTimeLine: false
 });

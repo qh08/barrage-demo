@@ -16,7 +16,8 @@
     "parcel-bundler": "^1.12.3"
   },
   "dependencies": {
-    "barrage": "^2.0.4"
+    "barrage": "^2.0.4",
+    "loadsh": "0.0.4"
   },
   "config": {
     "commitizen": {
