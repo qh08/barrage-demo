@@ -9,17 +9,22 @@ export default class Barrage {
     this.startTime = null;
     this.working = false;
     this.delay = 0;
+    this.fontSize = 25;
     this.barrageStyle = {
-      "line-height": "1",
+      "line-height": "1.3",
+      padding:"0 5px",
       "user-select": "none",
       position: "absolute",
       left: `${container.clientWidth}px`,
       top: "20px",
       transform: "0",
       transition: `transform 5s linear`,
-      "white-space": "pre",
+      overflow: "hidden",
+      "white-space": "nowrap",
       "will-change": "transform",
-      "font-size": "25px;",
+      "font-size": `${this.fontSize}px;`,
+      // "text-overflow": "ellipsis",
+      // width: `${this.fontSize * (displayCharMaxNum + 0)}px`,
       color: "#ffffff",
       "text-shadow":
         "rgb(0, 0, 0) 1px 0px 1px, rgb(0, 0, 0) 0px 1px 1px, rgb(0, 0, 0) 0px -1px 1px, rgb(0, 0, 0) -1px 0px 1px"
@@ -57,8 +62,8 @@ export default class Barrage {
   }) {
     this.barrage.setAttribute("style", "");
     this.working = true;
-    this.barrage.textContent = '';
-    
+    this.barrage.textContent = "";
+
     setTimeout(() => {
       this.barrage.setAttribute("style", this.getStyleString());
       this.barrage.textContent = content;

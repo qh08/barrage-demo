@@ -1,9 +1,9 @@
 export default [
   {
-    content: "试一试"
+    content: "一二三四五六七八九十十一十二"
   },
   {
-    content: "热刺是冠军"
+    content: "12345678901112"
   },
   {
     content: "嗯"
