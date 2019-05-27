@@ -3,9 +3,9 @@ import Barrage from "./barrage";
 export default class barrageController {
   constructor({
     container,
-    mode = "",
     barrageInfo,
     barrageHeight,
+    barrageFontSize,
     barrageCharMaxNum,
     isLoop,
     hasTimeLine,
@@ -13,14 +13,12 @@ export default class barrageController {
   }) {
     // 弹幕容器
     this.container = container;
-    // 模式 full half quarter
-    this.mode = mode;
     // 弹幕信息，数组对象，显示文字属性为 content
-    this.barrageInfo = this.initBarragInfo(barrageInfo);
+    this.barrageInfo = this.initBarragInfo(barrageInfo, barrageCharMaxNum);
     // 弹幕高度
     this.barrageHeight = barrageHeight;
-    // 弹幕显示字符串字数最大值
-    this.barrageCharMaxNum = barrageCharMaxNum;
+    // 弹幕字体大小
+    this.barrageFontSize = barrageFontSize;
     // 是否循环播放弹幕
     this.isLoop = isLoop;
     // 是否有时间轴
@@ -28,13 +26,12 @@ export default class barrageController {
     // 弹幕飘过的时间
     this.periodTime = 5000;
     // 弹幕最大长度，0为无限制长度, 单位px
-    this.barrageMaxWidth = 200;
+    this.barrageMaxWidth = barrageCharMaxNum * barrageFontSize;
     // 同一行前后弹幕的最小时间间隔
     this.barrageInterval = null;
     // 纵向显示弹幕的最大值
     this.verticalBarrageNum = lineNum;
     this.verticalIndex = 0;
-    this.delayCount = 0;
 
     this.lineBarrage = new Array(this.verticalBarrageNum);
     this.storage = [];
@@ -54,7 +51,8 @@ export default class barrageController {
       const count = Math.floor(index / this.verticalBarrageNum);
       info.delay = (
         count * this.barrageInterval +
-        (Math.random() * this.barrageInterval) / 2
+        0
+        // (Math.random() * this.barrageInterval) / 1000
       ).toFixed(2);
     });
   }
@@ -66,7 +64,7 @@ export default class barrageController {
         if (!barrage) {
           barrage = new Barrage({
             container: this.container,
-            displayCharMaxNum: this.barrageCharMaxNum
+            fontSize: this.barrageFontSize
           });
           this.storage.push(barrage);
           barrage.load();
@@ -92,10 +90,11 @@ export default class barrageController {
     });
   }
 
-  initBarragInfo(barrageInfo) {
+  initBarragInfo(barrageInfo, barrageCharMaxNum) {
     barrageInfo.forEach(info => {
       let content = info.content;
-      if (content.length > 13) info.content = content.substring(0, 13) + "...";
+      if (content.length > barrageCharMaxNum)
+        info.content = content.substring(0, 13) + "...";
     });
     return barrageInfo;
   }

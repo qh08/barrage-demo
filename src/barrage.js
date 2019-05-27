@@ -1,5 +1,5 @@
 export default class Barrage {
-  constructor({ container }) {
+  constructor({ container, fontSize }) {
     this.container = container;
     this.content = "";
     this.color = null;
@@ -9,10 +9,9 @@ export default class Barrage {
     this.startTime = null;
     this.working = false;
     this.delay = 0;
-    this.fontSize = 25;
     this.barrageStyle = {
       "line-height": "1.3",
-      padding:"0 5px",
+      padding: "0 5px",
       "user-select": "none",
       position: "absolute",
       left: `${container.clientWidth}px`,
@@ -22,7 +21,7 @@ export default class Barrage {
       overflow: "hidden",
       "white-space": "nowrap",
       "will-change": "transform",
-      "font-size": `${this.fontSize}px;`,
+      "font-size": `${fontSize}px;`,
       // "text-overflow": "ellipsis",
       // width: `${this.fontSize * (displayCharMaxNum + 0)}px`,
       color: "#ffffff",
